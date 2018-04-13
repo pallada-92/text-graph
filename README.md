@@ -30,13 +30,13 @@
         "radius": 4,
         "color": "red",
         "style": "normal",
-    }, ...],
+    }, {}, {}, {}],
     "edges": [{
         "source": 0,
         "target": 1,
         "weight": 3,
         "style": "normal",
-    }, ...],
+    }, {}, {}, {}],
     "polygons": [{
         "color": "lightblue",
         "style": "normal",
@@ -45,7 +45,7 @@
             "y": 5,
             "radius": 1,
             "style": "normal"
-        }, ...]
-    }, ...]
+        }, {}, {}, {}]
+    }, {}, {}, {}]
 }
 ```
