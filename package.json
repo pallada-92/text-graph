@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ramda": "^0.25.0",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "semantic-ui-css": "^2.3.1",
+    "semantic-ui-react": "^0.79.1",
+    "stats-js": "^1.0.0-alpha1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -15,6 +19,7 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint",
+    "extends": "react-app",
     "env": {
       "browser": true
     }
