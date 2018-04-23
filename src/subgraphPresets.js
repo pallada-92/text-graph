@@ -31,9 +31,9 @@ export const byDeg = (
   const subNodes2 = new Subset().fromFilter(degrees1, x => x >= minDegree);
   const subEdges2 = subEdges(subNodes2, edge_source, edge_target);
 
-  const [source, target] = subEdges2.applyMany(edge_source, edge_target);
+  // const [source, target] = subEdges2.applyMany(edge_source, edge_target);
 
-  const degrees2 = degrees(node_label.length, source, target);
+  // const degrees2 = degrees(node_label.length, source, target);
 
   return {
     subNodes: subNodes2,
