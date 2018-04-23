@@ -24,8 +24,8 @@ export default class extends Component {
 
     const { x, y } = randomLayout(
       subNodes.length(),
-      window.innerWidth,
-      window.innerHeight,
+      this.props.width,
+      this.props.height,
     );
 
     this.graph = {
@@ -36,7 +36,6 @@ export default class extends Component {
       edge_target: subNodes.reindex(subEdges.apply(graph1.edge_target)),
       edge_weight: subEdges.apply(graph1.edge_weight),
     };
-    console.log(JSON.stringify(this.graph));
   }
 
   componentDidMount = () => {

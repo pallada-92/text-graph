@@ -37,7 +37,9 @@ export default class extends Component {
 
   setCanvas = canvas => {
     this.canvas = canvas;
-    this.ctx = this.canvas.getContext('2d');
+    if (canvas) {
+      this.ctx = this.canvas.getContext('2d');
+    }
   };
 
   redraw = () => {

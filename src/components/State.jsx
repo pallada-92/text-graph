@@ -1,7 +1,15 @@
 import { Component } from 'react';
 
 export default class extends Component {
-  state = {};
+  constructor(props) {
+    super(props);
+
+    if (this.props.initial) {
+      this.state = this.props.initial;
+    } else {
+      this.state = {};
+    }
+  }
 
   render = () =>
     this.props.children({

@@ -9,7 +9,6 @@ const draw = (
   width,
   height,
 ) => {
-  console.log('draw');
   ctx.save();
   ctx.strokeStyle = 'rgba(0, 0, 0, 0.1)';
   zip(edge_source, edge_target).forEach(([s, t], i) => {

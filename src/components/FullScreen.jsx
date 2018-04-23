@@ -4,8 +4,8 @@ export default class extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      width: 0,
-      height: 0,
+      width: window.innerWidth,
+      height: window.innerHeight,
     };
   }
 
@@ -18,7 +18,6 @@ export default class extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.onResize);
-    this.onResize();
   }
 
   componentWillUnmount() {
