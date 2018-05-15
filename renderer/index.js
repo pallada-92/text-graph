@@ -1,40 +1,57 @@
-let ctx = null;
+function isObject(item) {
+  return (item && typeof item === 'object' && !Array.isArray(item));
+}
+
+function mergeDeep(target, ...sources) {
+  if (!sources.length) return target;
+  const source = sources.shift();
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+  return mergeDeep(target, ...sources);
+}
+
+let scene = null;
+
+const baseScene = 'scenes/scene2.base.json';
+const overScene = 'scenes/scene1.1.json';
 
 function startDrawing(data) {
   const canvas = document.getElementById('preview');
 
-  const frame = data['frame.json'];
+  const sceneBaseData = data[baseScene];
+  const sceneOverData = data[overScene];
+  const sceneData = mergeDeep(sceneBaseData, sceneOverData);
+  
+  sceneData.textures.cmu_serif.image = data['cmu_serif.png'];
 
-  ctx = new Context(canvas);
-  window.ctx = ctx;
-  ctx.initialize();
+  scene = new Scene(canvas, sceneData);
+  drawFrame(0, 1);
+}
 
-  frame.program = new Program(ctx.gl, frame.program);
-  frame.program.compile();
-
-  for (const variable in frame.attributes) {
-    const buffer = new Buffer(ctx.gl, frame.attributes[variable]);
-    buffer.send();
-    frame.attributes[variable] = buffer;
+function drawFrame(frame, n) {
+  if (n < 5) {
+    window.requestAnimationFrame(() => {
+      drawFrame(frame, n + 1);
+    });
   }
+  scene.drawPostFrame(frame, n);
+}
 
-  for (const variable in frame.textures) {
-    const prev = frame.textures[variable];
-    prev.image = data[prev.url];
-    const texture = new Texture(ctx.gl, prev);
-    texture.send();
-    frame.textures[variable] = texture;
-  }
-
-  ctx.clear(1920, 1080);
-  ctx.draw(frame);
+function ext(fname) {
+  const parts = fname.split('.');
+  return parts[parts.length - 1];
 }
 
 window.addEventListener('load', () => {
-  const dataUrls = [
-    'cmu_serif.json',
-    'frame.json',
-  ];
+  const dataUrls = ['cmu_serif.json', baseScene, overScene];
   const imgsUrls = ['cmu_serif.png'];
   const data = {};
 
@@ -47,12 +64,11 @@ window.addEventListener('load', () => {
   let dataLoaded = 0;
   const dataReqs = dataUrls.forEach((url, i) => {
     const req = new XMLHttpRequest();
-    const extension = url.split('.')[1];
 
     req.responseType = {
       json: 'json',
       c: 'text',
-    }[extension];
+    }[ext(url)];
 
     req.addEventListener('load', () => {
       data[url] = req.response;
