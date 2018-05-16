@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.5.14)  16 MAY 2018 23:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Arch Linux) (preloaded format=pdflatex 2018.5.14)  17 MAY 2018 01:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -868,55 +868,108 @@ Package babel Info: Redefining russian shorthand "|
 Package babel Info: Redefining russian shorthand "~
 (babel)             in language append on input line 4.
 <<t2a.cmap>>
+Overfull \hbox (12.72186pt too wide) in paragraph at lines 8--9
+[]\T2A/cmr/m/n/10 Ќесмотр€ на на-ли-чие мно-же-ства ре-а-ли-за-ций этих ал-го-р
+ит-мов на JavaScript,
+ []
+
 Package babel Info: Redefining russian shorthand "|
-(babel)             in language append on input line 8.
+(babel)             in language append on input line 10.
 Package babel Info: Redefining russian shorthand "~
-(babel)             in language append on input line 8.
-Package babel Info: Redefining russian shorthand "|
-(babel)             in language append on input line 12.
-Package babel Info: Redefining russian shorthand "~
-(babel)             in language append on input line 12.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 14.
-Package babel Info: Redefining russian shorthand "|
-(babel)             in language append on input line 14.
-Package babel Info: Redefining russian shorthand "~
-(babel)             in language append on input line 14.
+(babel)             in language append on input line 10.
 Package babel Info: Redefining russian shorthand "|
 (babel)             in language append on input line 14.
 Package babel Info: Redefining russian shorthand "~
 (babel)             in language append on input line 14.
- [1
+<<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>>
+LaTeX Font Info:    Try loading font information for U+msa on input line 22.
+
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 22.
+
+(/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Overfull \hbox (3.94623pt too wide) in paragraph at lines 24--25
+[]\T2A/cmr/m/n/10 ‘изическа€ си-му-л€-ци€ осу-ществ-л€-ет-с€ при по-мо-щи ин-те
+-гри-ро-ва-ни€ ¬ер-
+ []
+
+Package babel Info: Redefining russian shorthand "|
+(babel)             in language append on input line 27.
+Package babel Info: Redefining russian shorthand "~
+(babel)             in language append on input line 27.
+Package babel Info: Redefining russian shorthand "|
+(babel)             in language append on input line 27.
+Package babel Info: Redefining russian shorthand "~
+(babel)             in language append on input line 27.
+[1
 
 
 
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 14.
+Package babel Info: Redefining russian shorthand "|
+(babel)             in language append on input line 28.
+Package babel Info: Redefining russian shorthand "~
+(babel)             in language append on input line 28.
+LaTeX Font Info:    Try loading font information for T2A+cmtt on input line 30.
 
-(./diploma.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 14.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 14.
+
+(/usr/share/texmf-dist/tex/latex/cyrillic/t2acmtt.fd
+File: t2acmtt.fd 2001/08/11 v1.0a Computer Modern Cyrillic font definitions
+)
+Package babel Info: Redefining russian shorthand "|
+(babel)             in language append on input line 35.
+Package babel Info: Redefining russian shorthand "~
+(babel)             in language append on input line 35.
+Package babel Info: Redefining russian shorthand "|
+(babel)             in language append on input line 39.
+Package babel Info: Redefining russian shorthand "~
+(babel)             in language append on input line 39.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 41.
+Package babel Info: Redefining russian shorthand "|
+(babel)             in language append on input line 41.
+Package babel Info: Redefining russian shorthand "~
+(babel)             in language append on input line 41.
+Package babel Info: Redefining russian shorthand "|
+(babel)             in language append on input line 41.
+Package babel Info: Redefining russian shorthand "~
+(babel)             in language append on input line 41.
+ [2]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 41.
+ (./diploma.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 41.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 41.
 Package rerunfilecheck Info: File `diploma.out' has not changed.
-(rerunfilecheck)             Checksum: FDFA2960FBB19195951614DA1DE304B1;624.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 14.
+(rerunfilecheck)             Checksum: A67E7080434A698474B7CCEC089F7EA2;1464.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 41.
  ) 
 Here is how much of TeX's memory you used:
- 10632 strings out of 492982
- 140800 string characters out of 6138579
- 212356 words of memory out of 5000000
- 14095 multiletter control sequences out of 15000+600000
- 9382 words of font info for 21 fonts, out of 8000000 for 9000
+ 10715 strings out of 492982
+ 142288 string characters out of 6138579
+ 214360 words of memory out of 5000000
+ 14134 multiletter control sequences out of 15000+600000
+ 13012 words of font info for 32 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 32i,4n,32p,625b,347s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,4n,32p,633b,348s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t2a.enc}</usr/share/
-texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/font
-s/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf-dist/fonts/type1/public/
-cm-super/sfbx2488.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm10
-00.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on diploma.pdf (1 page, 66579 bytes).
+texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/s
+hare/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist
+/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/pu
+blic/cm-super/sfbx2074.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/s
+fbx2488.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></u
+sr/share/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/share/texmf-
+dist/fonts/type1/public/cm-super/sftt1000.pfb>
+Output written on diploma.pdf (2 pages, 146737 bytes).
 PDF statistics:
- 48 PDF objects out of 1000 (max. 8388607)
- 38 compressed objects within 1 object stream
- 5 named destinations out of 1000 (max. 500000)
- 29 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 98 PDF objects out of 1000 (max. 8388607)
+ 76 compressed objects within 1 object stream
+ 9 named destinations out of 1000 (max. 500000)
+ 69 words of extra memory for PDF output out of 10000 (max. 10000000)
 
