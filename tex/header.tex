@@ -1,0 +1,123 @@
+\documentclass[10pt,a4paper]{report}
+%\usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm,bindingoffset=0cm]{geometry}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{cmap}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb} 
+\usepackage{hyperref}
+\usepackage{stackrel}
+\usepackage{graphicx}
+%\widetilde
+\nonfrenchspacing
+\righthyphenmin=2
+\def\jo{\"e}
+\def\num{\textnumero}
+
+%%%%% Формулы
+\def\le{\leqslant} % Делает знак неравенства классическим
+\def\ge{\geqslant}
+\def\emptyset{\varnothing} % Обычное пустое множество
+\def\divisible#1#2{#1\hspace{2.5pt}\raisebox{-1.5pt}{\smash{\vdots}}\hspace{2.5pt}#2}
+\def\eqmod#1#2#3{#1\equiv#2\mbox{\hspace{2mm}(mod $#3$)}}
+\def\so{\Rightarrow}
+\def\theoremend{\hfill\vbox to 0pt{\hbox{$\square$}}}
+\def\solutionend{\hfill$\blacksquare$}
+\def\quest#1{\stackrel{?}{#1}}
+\def\epsilon{\varepsilon}
+\def\phi{\varphi}
+\def\rddots#1{\cdot^{\cdot^{\cdot^{#1}}}} % Зеркальное отражение \ddots
+%\def\modop{\ \ \mbox{mod}\ \ }
+
+\def\missing{\rule[-0.33em]{1em}{1.36em}\fbox{???}\rule[-0.33em]{1em}{1.36em}}
+\def\missingwhat#1{\fbox{\parbox{10cm}{#1}}}
+
+
+\def\df{{\bfseries Определение. }}
+\def\pr#1{{\bf Задача \num#1. }}
+\def\th{{\bfseries Теорема. }}
+\def\bigmid{\mathrel{}\middle|\mathrel{}}
+\def\solutionstart{$\square$\;\;}
+\def\therm#1{{\it #1}}
+
+\usepackage{indentfirst}
+\DeclareMathOperator{\Mat}{Mat}
+\DeclareMathOperator{\M}{M}
+\DeclareMathOperator{\Sp}{Sp}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Def}{def}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\odd}{odd}
+\DeclareMathOperator{\Det}{Det}
+\DeclareMathOperator{\Vol}{Vol}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\adj}{adj}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\re}{Re}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\Arg}{Arg}
+%\DeclareMathOperator{\ch}{ch}
+%\DeclareMathOperator{\ker}{ker}
+\DeclareMathOperator{\Rg}{Rg}
+\DeclareMathOperator{\Dom}{Dom}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Gr}{Gr}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\ort}{ort}
+\DeclareMathOperator{\PR}{pr}
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\Int}{int}
+\DeclareMathOperator{\Ext}{ext}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\dom}{dom}
+
+\def\deflr{\stackrel[\Def]{}{\Longleftrightarrow}}
+
+\def\dvec#1#2{\begin{pmatrix}
+#1\\#2
+\end{pmatrix}}
+\def\ov#1{\overrightarrow{#1}}
+\def\ovl#1{\overline{#1}}
+\def\mat#1#2#3{\begin{pmatrix}
+#1_{11} & #1_{12} & \ldots & #1_{1#3}\\
+\vdots &  & \ddots & \vdots \\
+#1_{#2 1} & #1_{#2 2} & \ldots & #1_{#2#3}
+\end{pmatrix}
+}
+\def\vec#1#2{\left(\begin{smallmatrix}#1\\\vdots\\
+#2\end{smallmatrix}\right)}
+\def\system#1#2{\left\{
+\begin{aligned}
+#1\\
+\vdots\\
+#2\\
+\end{aligned}
+\right.
+}
+\def\blockmatrix#1#2#3#4{\left(
+\begin{array}{c|c}
+  #1 & #2 \\ \hline
+  #3 & #4
+\end{array}
+\right)}
+
+
+\def\Uc{\stackrel{\circ}{U}}
+\def\rra#1{\stackrel{#1}{\rightrightarrows}}
+\def\E{\mathbb E}
+\def\D{D}
+\def\vrt#1{\left\lVert#1\right\rVert}
+\def\br#1{\left(#1\right)}
+\def\brc#1{\left\{#1\right\}}
+\def\abs#1{\left|#1\right|}
+% \stackrel stackbin 

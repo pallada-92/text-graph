@@ -180,22 +180,29 @@ class Scene {
     }
   }
 
-  motionBlur() {
-    return this.scene.postprocessing.motion_blur || 0;
+  motionBlur(frame) {
+    return getAtIndex(
+      frame,
+      this.scene.postprocessing.motion_blur || 0,
+      1,
+      0,
+    )[0];
   }
 
   getViewportMatrix(frame) {
     const camera = this.scene.camera;
     const fov =
-      getAtIndex(frame, camera.fov, 1, this.motionBlur())[0] / 180 * Math.PI;
-    const near = getAtIndex(frame, camera.near, 1, this.motionBlur())[0];
-    const far = getAtIndex(frame, camera.far, 1, this.motionBlur())[0];
-    const target = getAtIndex(frame, camera.target, 3, this.motionBlur());
+      getAtIndex(frame, camera.fov, 1, this.motionBlur(frame))[0] /
+      180 *
+      Math.PI;
+    const near = getAtIndex(frame, camera.near, 1, this.motionBlur(frame))[0];
+    const far = getAtIndex(frame, camera.far, 1, this.motionBlur(frame))[0];
+    const target = getAtIndex(frame, camera.target, 3, this.motionBlur(frame));
     const [alpha, beta, dist] = getAtIndex(
       frame,
       camera.polar,
       3,
-      this.motionBlur(),
+      this.motionBlur(frame),
     );
     const viewport = mat4.create();
     mat4.perspective(viewport, fov, this.width / this.height, near, far);
@@ -241,7 +248,12 @@ class Scene {
       } else if (variable === 'screen') {
         value = [this.width, this.height];
       } else {
-        value = getAtIndex(index, uniforms[variable], size, this.motionBlur());
+        value = getAtIndex(
+          index,
+          uniforms[variable],
+          size,
+          this.motionBlur(frame),
+        );
       }
       ctx.setUniform(variable, value);
     }

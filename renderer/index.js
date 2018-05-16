@@ -23,8 +23,8 @@ let scene = null;
 let frame = 0;
 let blendIter = 0;
 let playing = false;
-const baseScene = 'scenes/scene2.base.json';
-const overScene = 'scenes/scene1.1.json';
+const baseScene = 'scenes/scene3.base.json';
+const overScene = 'scenes/scene3.1.json';
 
 window.addEventListener('keydown', ({ key }) => {
   if (key === ' ') {
