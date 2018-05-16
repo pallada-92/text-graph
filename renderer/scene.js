@@ -27,7 +27,7 @@ function getAtIndex(index, data, size, motionBlur) {
     if (!motionBlur || typeof data[0] !== 'number') {
       return val;
     }
-    if (Math.random() < 0.5) {
+    if (Math.random() < 0.5 || index == 0) {
       const val2 = data.slice((index + 1) * size, (index + 2) * size);
       return mix(val, val2, Math.random() * motionBlur);
     } else {
@@ -46,7 +46,12 @@ class Scene {
     this.canvas.width = scene.width;
     this.canvas.height = scene.height;
     this.scene = scene;
-    this.frames = scene.frames;
+    this.start = scene.start;
+    this.stop = scene.stop;
+    this.step = scene.step;
+    this.exportAs = scene.export_as;
+    this.blendIters = scene.postprocessing.blend_iters;
+    this.doPost = !!scene.postprocessing.enabled;
 
     this.gl = this.canvas.getContext('webgl', {
       antialias: false,
@@ -130,9 +135,6 @@ class Scene {
       );
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
-      this.postProgram = new Program(gl, this.scene.programs.post);
-      this.postProgram.compile();
-
       this.postTextures = [];
       this.postFramebuffers = [];
       this.blendPrograms = [];
@@ -179,7 +181,7 @@ class Scene {
   }
 
   motionBlur() {
-    return this.scene.postprocessing.motionBlur || 0;
+    return this.scene.postprocessing.motion_blur || 0;
   }
 
   getViewportMatrix(frame) {
@@ -198,15 +200,20 @@ class Scene {
     const viewport = mat4.create();
     mat4.perspective(viewport, fov, this.width / this.height, near, far);
     const transform = mat4.create();
-    mat4.translate(transform, transform, [0, 0, -dist]);
+    const camPos = vec3.fromValues(0, 0, -dist);
+    vec3.rotateY(camPos, camPos, [0, 0, 0], -alpha / 180 * Math.PI);
+    vec3.rotateX(camPos, camPos, [0, 0, 0], -beta / 180 * Math.PI);
+    vec3.subtract(camPos, camPos, target);
+
     mat4.rotateY(transform, transform, alpha / 180 * Math.PI);
     mat4.rotateX(transform, transform, beta / 180 * Math.PI);
-    mat4.translate(transform, transform, target);
+    mat4.translate(transform, transform, camPos);
+
     mat4.multiply(viewport, viewport, transform);
     return viewport;
   }
 
-  drawLayer(layer, index, viewport) {
+  drawLayer(layer, index, params) {
     const ctx = this.ctx;
     const gl = this.gl;
     const {
@@ -230,7 +237,7 @@ class Scene {
           value.push(Math.random());
         }
       } else if (variable === 'camera') {
-        value = viewport;
+        value = params.viewport;
       } else if (variable === 'screen') {
         value = [this.width, this.height];
       } else {
@@ -246,8 +253,12 @@ class Scene {
     }
 
     for (const variable in textures) {
-      const textureId = getAtIndex(index, textures[variable], 1)[0];
-      ctx.setTexture(variable, this.textures[textureId]);
+      if (variable === 'render') {
+        ctx.setTexture('render', params.renderTexture);
+      } else {
+        const textureId = getAtIndex(index, textures[variable], 1)[0];
+        ctx.setTexture(variable, this.textures[textureId]);
+      }
     }
 
     const first = getAtIndex(index, draw.first, 1)[0];
@@ -273,7 +284,7 @@ class Scene {
       const layer = this.scene.layers[layerName];
       if (!(frame in layer.revFrames)) return;
       layer.revFrames[frame].forEach(index => {
-        this.drawLayer(this.scene.layers[layerName], index, viewport);
+        this.drawLayer(this.scene.layers[layerName], index, { viewport });
       });
     }
   }
@@ -281,8 +292,15 @@ class Scene {
   drawPostFrame(frame, n) {
     const gl = this.gl;
     const ctx = this.ctx;
+    if (!this.doPost) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.enable(gl.DEPTH_TEST);
+      gl.disable(gl.BLEND);
+      this.drawFrame(frame);
+      return;
+    }
 
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= this.scene.postprocessing.post_iters; i++) {
       gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
       gl.enable(gl.DEPTH_TEST);
       gl.disable(gl.BLEND);
@@ -292,19 +310,13 @@ class Scene {
       gl.enable(gl.BLEND);
       gl.disable(gl.DEPTH_TEST);
 
-      gl.bindFramebuffer(gl.FRAMEBUFFER, this.postFramebuffer);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this.postFramebuffers[0]);
       gl.blendColor(0, 0, 0, 1 / i);
       gl.blendFunc(gl.CONSTANT_ALPHA, gl.ONE_MINUS_CONSTANT_ALPHA);
 
-      ctx.useProgram(this.postProgram);
-      ctx.setUniform('screen', [scene.width, scene.height]);
-      ctx.setUniform('random', [Math.random(), Math.random()]);
-      ctx.keepAttributes({ pos: null });
-      ctx.setAttribute('pos', this.postPosBuffer);
-      ctx.setUniform('focus', [4, 5]);
-      ctx.setTexture('render', this.framebufferTexture);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-      ctx.setTexture('render', null);
+      this.drawLayer(this.scene.postprocessing, frame, {
+        renderTexture: this.framebufferTexture,
+      });
     }
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);

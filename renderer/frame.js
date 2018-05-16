@@ -9,7 +9,10 @@ const sizes = {
 };
 
 class Program {
-  constructor(gl, { vertex, fragment, attributes, uniforms, textures, mode }) {
+  constructor(
+    gl,
+    { vertex, fragment, attributes, uniforms, textures, mode, constants },
+  ) {
     this.vertex = vertex;
     this.fragment = fragment;
     this.attributes = attributes;
@@ -17,6 +20,7 @@ class Program {
     this.textures = textures;
     this.mode = mode;
     this.gl = gl;
+    this.constants = constants;
     this.locations = {};
   }
 
@@ -31,13 +35,20 @@ class Program {
     return sizes[this.attributes[variable].slice(0, -1)];
   }
 
+  replaceConstants(source) {
+    for (const c in this.constants) {
+      source = source.replace(c, this.constants[c]);
+    }
+    return source;
+  }
+
   compile() {
     const gl = this.gl;
 
     const vshader = gl.createShader(gl.VERTEX_SHADER);
     const fshader = gl.createShader(gl.FRAGMENT_SHADER);
 
-    gl.shaderSource(vshader, this.vertex);
+    gl.shaderSource(vshader, this.replaceConstants(this.vertex));
     gl.compileShader(vshader);
 
     if (!gl.getShaderParameter(vshader, gl.COMPILE_STATUS)) {
@@ -45,7 +56,7 @@ class Program {
       return;
     }
 
-    gl.shaderSource(fshader, this.fragment);
+    gl.shaderSource(fshader, this.replaceConstants(this.fragment));
     gl.compileShader(fshader);
 
     if (!gl.getShaderParameter(fshader, gl.COMPILE_STATUS)) {

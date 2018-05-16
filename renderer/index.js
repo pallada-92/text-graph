@@ -1,5 +1,5 @@
 function isObject(item) {
-  return (item && typeof item === 'object' && !Array.isArray(item));
+  return item && typeof item === 'object' && !Array.isArray(item);
 }
 
 function mergeDeep(target, ...sources) {
@@ -18,31 +18,89 @@ function mergeDeep(target, ...sources) {
   return mergeDeep(target, ...sources);
 }
 
+let data = {};
 let scene = null;
-
+let frame = 0;
+let blendIter = 0;
+let playing = false;
 const baseScene = 'scenes/scene2.base.json';
 const overScene = 'scenes/scene1.1.json';
 
-function startDrawing(data) {
-  const canvas = document.getElementById('preview');
+window.addEventListener('keydown', ({ key }) => {
+  if (key === ' ') {
+    const req = new XMLHttpRequest();
+    const url = overScene;
+    req.responseType = ext(url);
+    req.addEventListener('load', () => {
+      data[url] = req.response;
+      startDrawing();
+    });
+    req.open('GET', url);
+    req.send();
+  } else if (key === 'Escape') {
+    playing = false;
+  }
+});
+
+let pending = 0;
+
+function onFrame() {
+  window.requestAnimationFrame(onFrame);
+  if (!playing) return;
+  if (pending > 10) {
+    console.log('PENDING > 10');
+    playing = false;
+    return;
+  }
+  if (frame >= scene.stop) {
+    console.log('STOP');
+    playing = false;
+    return;
+  }
+
+  scene.drawPostFrame(frame, blendIter + 1);
+
+  blendIter++;
+  if (blendIter >= scene.blendIters) {
+    if (scene.exportAs) {
+      const req = new XMLHttpRequest();
+      req.responseType = 'text';
+      req.addEventListener('load', () => {
+        console.log(req.response);
+        if (req.response.slice(0, 3) === 'OK ') {
+          pending--;
+        }
+      });
+      req.open(
+        'POST',
+        `http://localhost:4004?scene=${scene.exportAs}&frame=${frame}`,
+      );
+      req.send(canvas.toDataURL());
+      pending++;
+    }
+    blendIter = 0;
+    frame += scene.step;
+    console.timeEnd('frame');
+    console.time('frame');
+    console.log('FRAME %d', frame);
+  }
+}
+
+let canvas = null;
+
+function startDrawing() {
+  canvas = document.getElementById('preview');
 
   const sceneBaseData = data[baseScene];
   const sceneOverData = data[overScene];
   const sceneData = mergeDeep(sceneBaseData, sceneOverData);
-  
+
   sceneData.textures.cmu_serif.image = data['cmu_serif.png'];
 
   scene = new Scene(canvas, sceneData);
-  drawFrame(0, 1);
-}
-
-function drawFrame(frame, n) {
-  if (n < 5) {
-    window.requestAnimationFrame(() => {
-      drawFrame(frame, n + 1);
-    });
-  }
-  scene.drawPostFrame(frame, n);
+  frame = scene.start;
+  blendIter = 0;
+  playing = true;
 }
 
 function ext(fname) {
@@ -51,13 +109,13 @@ function ext(fname) {
 }
 
 window.addEventListener('load', () => {
+  onFrame();
   const dataUrls = ['cmu_serif.json', baseScene, overScene];
   const imgsUrls = ['cmu_serif.png'];
-  const data = {};
 
   function checkLoaded() {
     if (dataLoaded === dataUrls.length && imgsLoaded === imgsUrls.length) {
-      startDrawing(data);
+      startDrawing();
     }
   }
 
