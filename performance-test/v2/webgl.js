@@ -51,7 +51,7 @@ class Webgl {
     gl.enableVertexAttribArray(shaderProgram.pos);
 
     uniforms.forEach(uniform => {
-      shaderProgram[uniform] = gl.getUniformLocation(shaderProgram, unoform);
+      shaderProgram[uniform] = gl.getUniformLocation(shaderProgram, uniform);
     });
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.fullTriangle);
@@ -70,14 +70,24 @@ class Webgl {
     texture.width = width;
     texture.height = height;
     texture.type = 'RGBA';
+    texture.textureId = textureId;
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     return texture;
+  }
+
+  bindTexture(texture) {
+    const gl = this.gl;
+    gl.activeTexture(gl.TEXTURE0 + texture.textureId);
+    gl.bindTexture(gl.TEXTURE_2D, texture);
   }
 
   sendTexture(texture, data) {
     const gl = this.gl;
+    this.bindTexture(texture);
     gl.texImage2D(
       gl.TEXTURE_2D,
       0,
@@ -98,6 +108,7 @@ class Webgl {
     framebuffer.height = textures[0].height;
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
     textures.forEach((texture, i) => {
+      this.bindTexture(texture);
       gl.framebufferTexture2D(
         gl.FRAMEBUFFER,
         gl.COLOR_ATTACHMENT0 + i,
@@ -113,8 +124,8 @@ class Webgl {
   useFramebuffer(framebuffer) {
     const gl = this.gl;
     this.framebuffer = framebuffer;
-    gl.viewport(0, 0, this.framebuffer.width, this.framebuffer.height);
     this.gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    gl.viewport(0, 0, this.framebuffer.width, this.framebuffer.height);
   }
 
   draw() {
