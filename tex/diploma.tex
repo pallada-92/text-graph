@@ -466,7 +466,7 @@ calc_attr_mul_tsne(float sq_dist, float weight):
 \section{Локальные и глобальные силы отталкивания}
 \label{sec:iter_estimate}
 
-\begin{figure}[h!]
+\begin{figure}[t]
   \centering
   \includegraphics[width=\textwidth]{grid_step_2.png}
   \caption{Моделирование числа итераций локальных сил отталкивания для разных шагов сетки, значений $r_0$ и количеств вершин для размерности 2.}
@@ -847,6 +847,56 @@ return sum / count;
 \item \texttt{delta} --- случайный вектор длины \texttt{rad},
 \item \texttt{tex} --- значние случайного пикселя, в направлении \texttt{delta} от текущего пикселя.
 \end{itemize}
+
+\chapter{Список литературы}
+
+
+
+\chapter{Примеры визуализаций}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{shots/cloud.png}
+  \caption{Облако слов, полученное применением трехмерного t-SNE к word2vec.}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{shots/local.png}
+  \caption{Облако слов word2vec, находящихся в окрестности одного из слов выборки.}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{shots/3dgraph.png}
+  \caption{Плоская визуализация с ребрами в виде трехмерных дуг.}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{shots/circle.png}
+  \caption{Пример двумерной визуализации.}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{shots/clusters.png}
+  \caption{Выделение K-Means кластеров вместе с ребрами.}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{shots/lens.png}
+  \caption{Пример lens blur.}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{shots/motion.png}
+  \caption{Пример motion blur.}
+\end{figure}
+
+
 
 \end{document}
   
