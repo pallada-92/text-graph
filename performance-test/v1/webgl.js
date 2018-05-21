@@ -1,7 +1,11 @@
 // https://stackoverflow.com/questions/9046643/webgl-create-texture
 // https://webgl2fundamentals.org/webgl/lessons/webgl-data-textures.html
 
+const timer = new Timer();
+
 function webgl(fshaderSource, points) {
+  timer.start('all');
+  timer.start('compile');
   const canvas = document.getElementById('calc');
   const gl = canvas.getContext('webgl');
   gl.viewportWidth = 64;
@@ -41,6 +45,7 @@ function webgl(fshaderSource, points) {
   if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
     console.log('Could not initialise shaders');
   }
+  timer.phase('bind');
 
   gl.useProgram(shaderProgram);
 
@@ -110,6 +115,8 @@ function webgl(fshaderSource, points) {
   gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, pMatrix);
   gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, mvMatrix);
 
+  timer.phase('generate and send');
+
   const inputW = 64;
   const inputH = 64;
   const data = new Uint8Array(inputW * inputH * 4);
@@ -170,7 +177,10 @@ function webgl(fshaderSource, points) {
 
   gl.uniform1i(dataUniform, 0);
 
+  timer.phase('iters');
+
   for (let iter = 0; iter < 10; iter++) {
+    timer.start('iter');
     gl.framebufferTexture2D(
       gl.FRAMEBUFFER,
       gl.COLOR_ATTACHMENT0,
@@ -182,10 +192,11 @@ function webgl(fshaderSource, points) {
     gl.bindTexture(gl.TEXTURE_2D, iter % 2 ? outputTexture : dataTexture);
 
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
+    timer.stop('iter');
   }
-
+  timer.stop('iters');
   const outputBuffer = new Uint8Array(outputW * outputH * 4);
-
+  timer.start('read');
   gl.readPixels(
     0,
     0,
@@ -195,6 +206,9 @@ function webgl(fshaderSource, points) {
     gl.UNSIGNED_BYTE,
     outputBuffer,
   );
+
+  timer.stop('read');
+  timer.stop('all');
 
   if (0) {
     for (let i = 0; i < outputBuffer.length; i++) {

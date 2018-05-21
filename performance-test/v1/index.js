@@ -158,48 +158,48 @@ function sum(array) {
   return sum;
 }
 
-/*
-window.addEventListener('load', () => {
-  window.points = generatePoints(5000, 64);
-  const asm = stepAsmModule(window, null, window.points.buffer);
-  window.durations = new Array(10).fill(0);
-  let durPos = 0;
-  function tick() {
-    console.log(sum(window.points));
-    const t0 = performance.now();
-    for (let i = 0; i < 10; i++) {
-      console.log(asm.rewrHalf(5000));
+if (0) {
+  window.addEventListener('load', () => {
+    window.points = generatePoints(4096, 64);
+    const asm = stepAsmModule(window, null, window.points.buffer);
+
+    function tick() {
+      timer.start('all');
+      for (let i = 0; i < 10; i++) {
+        timer.start('iter');
+        // asm.rewrHalf(4096);
+        stepRewrHalf(window.points);
+        timer.stop('iter');
+      }
+      timer.stop('all');
+      timer.printStats();
+      drawPoints(window.points, 'black', true);
+      // window.requestAnimationFrame(tick);
     }
-    const dur = performance.now() - t0;
-    console.log(sum(window.points));
-    window.durations[durPos] = dur;
-    durPos = (durPos + 1) % window.durations.length;
-    console.log('tick', dur, sum(window.durations) / window.durations.length);
-    drawPoints(window.points, 'black', true);
-    // window.requestAnimationFrame(tick);
-  }
-  tick();
-});
-*/
-
-window.addEventListener('load', () => {
-  let points = generatePoints(4096, 64);
-  const req = new XMLHttpRequest();
-
-  function tick() {
-    drawPoints(points, 'red', true);
-    const t0 = performance.now();
-    // for (let iter = 0; iter < 10; iter++) {
-    points = webgl(req.responseText, points);
-    // }
-    const dur = performance.now() - t0;
-    console.log('webgl', dur);
-    window.requestAnimationFrame(tick);
-  }
-
-  req.addEventListener('load', () => {
     tick();
   });
-  req.open('GET', 'shader.c');
-  req.send();
-});
+} else {
+  window.addEventListener('load', () => {
+    let points = generatePoints(4096, 64);
+    const req = new XMLHttpRequest();
+
+    function tick() {
+      drawPoints(points, 'red', true);
+      const t0 = performance.now();
+      points = webgl(req.responseText, points);
+      for (let iter = 0; iter < 10; iter++) {
+        points = webgl(req.responseText, points);
+      }
+      timer.printStats();
+      const dur = performance.now() - t0;
+      console.log('webgl', dur);
+      // window.requestAnimationFrame(tick);
+    }
+
+    req.addEventListener('load', () => {
+      tick();
+    });
+    req.open('GET', 'shader.c');
+    req.send();
+  });
+}

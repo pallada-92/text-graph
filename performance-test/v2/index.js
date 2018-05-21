@@ -139,11 +139,12 @@ function TestAttractions(timer, { eCnt, cCnt, cSize, vCnt, dim }) {
 
   this.iter = ([max, last]) => {
     const wgl = this.webgl;
-    timer.phase('populate');
+    // timer.phase('populate');
     for (let i = 0; i < this.positions.length; i++) {
       this.positions[i] = Math.floor(Math.random() * 256);
     }
-    timer.phase('send');
+    timer.start('all');
+    timer.start('send');
     wgl.sendTexture(this.positionsTexture, this.positions);
     timer.phase('draw');
     wgl.useFramebuffer(this.fb);
@@ -156,6 +157,7 @@ function TestAttractions(timer, { eCnt, cCnt, cSize, vCnt, dim }) {
     wgl.readPixels(this.output);
     max = Math.max(max, this.output[0]);
     timer.phase(null);
+    timer.stop('all');
     return [max, this.output];
   };
 }
@@ -306,5 +308,5 @@ window.addEventListener('load', () => {
     doTest(tests[curTest], fun);
   };
   // fun();
-  doTest(tests[3]);
+  doTest(tests[2]);
 });

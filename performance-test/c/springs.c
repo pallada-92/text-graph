@@ -7,7 +7,7 @@
 // Time taken 9 seconds 939 millisecondssum = 3302.935225
 
 int main() {
-  const int n = 5000;
+  const int n = 4096;
   double res[n * 2];
   for (int i=0; i<n*2; i++) {
     res[i] = fmod(fabs(sin(i * 1.0) * 1000.0), 1.0);
@@ -21,9 +21,8 @@ int main() {
   }
   printf("sum = %f\n", sum);
 
-  clock_t start = clock(), diff;
   for (int iter=0; iter < 10; iter++) {
-    printf("%d\n", iter);
+    clock_t start = clock(), diff;
     for (int i=0; i<n*2; i+=2) {
       double x1 = res[i];
       double y1 = res[i + 1];
@@ -43,11 +42,12 @@ int main() {
         res[j + 1] -= ddy;
       }
     }
+    diff = clock() - start;
+    int msec = diff * 1000 / CLOCKS_PER_SEC;
+    printf("%d.%d\n", msec/1000, msec%1000);
   }
-  diff = clock() - start;
 
-  int msec = diff * 1000 / CLOCKS_PER_SEC;
-  printf("Time taken %d seconds %d milliseconds", msec/1000, msec%1000);
+  // printf("Time taken %d seconds %d milliseconds", msec/1000, msec%1000);
 
   sum = 0;
   for (int i=0; i<n*2; i++) {
