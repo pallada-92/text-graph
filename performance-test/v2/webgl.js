@@ -7,7 +7,7 @@ class Webgl {
     this.gl = this.canvas.getContext('webgl');
     const gl = this.gl;
     this.draw_buffers = gl.getExtension('WEBGL_draw_buffers');
-    this.texture_float = gl.getExtension('OES_texture_float');
+    // this.texture_float = gl.getExtension('OES_texture_float');
 
     this.fullTriangle = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.fullTriangle);
@@ -106,6 +106,7 @@ class Webgl {
     const framebuffer = gl.createFramebuffer();
     framebuffer.width = textures[0].width;
     framebuffer.height = textures[0].height;
+    framebuffer.textures = textures;
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
     textures.forEach((texture, i) => {
       this.bindTexture(texture);
@@ -126,6 +127,11 @@ class Webgl {
     this.framebuffer = framebuffer;
     this.gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
     gl.viewport(0, 0, this.framebuffer.width, this.framebuffer.height);
+    if (framebuffer.textures.length > 1) {
+      this.draw_buffers.drawBuffersWEBGL(
+        framebuffer.textures.map((texture, i) => gl.COLOR_ATTACHMENT0 + i),
+      );
+    }
   }
 
   draw() {
