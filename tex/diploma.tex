@@ -3,9 +3,6 @@
 \begin{document}
 \setstretch{1.4}
 
-% \titlecontents{section}[10pt]{}{\contentsmargin{0pt}\thecontentslabel\enspace\large}{\contentsmargin{0pt}\large}{\titlerule*[.5pc]{.}\contentspage}[]
-%\begin{document}
-
 \thispagestyle{empty}
 \begin{center}
   Правительство Российской Федерации\\
@@ -41,18 +38,46 @@
 \centerline{Москва 2018}
 \newpage
 
-
 \tableofcontents
 
 \newpage
+
+Ключевые слова: t-SNE, Barnes-Hut optimization, Fruchterman Reingold, WebGL computations, video visualization, single-page web application.
 
 \section*{Введение}
 \label{sec:intro}
 \addcontentsline{toc}{section}{\nameref{sec:intro}}
 
+
+
 \section*{Обзор литературы}
 \label{sec:lit_review}
 \addcontentsline{toc}{section}{\nameref{sec:lit_review}}
+
+Задача интерактивной визуализации графа совстречаемости терминов при помощи WebGL лежит на стыке нескольких областей, по каждой из которых можно найти множество релевантных публикаций.
+
+Есть две классические статьи 1991 года, которые показали полезность трехмерных визуаизаций: \cite{classic_ecologies} показывает изменение древовидной структуры во времени, \cite{classic_3d_trees} позволяет интерактивно перемещаться по иерархической стркутуре.
+
+В некоторых статьях описываются общие решения, которые могут быть полезны при проектировании приложений для интерактивного анализа данных. В статье \cite{interactive_coordinated_views} показана техника coordinated views, позволяющая использовать несколько окон для отображения связанной информации. Статья \cite{25d_vislink} представляет механизм VisLink для соотнесения одних и тех же объектов на разных плоских визуализациях в трехмерном пространстве. В статье \cite{in_situ} приводится сложная в реализации, но очень мощная техника In Situ Exploration, позволяющая переходить плавно переходить между визуализациями связанных данных в зависимости от контекста.
+
+Есть примеры успешной реализации интерактивных веб-приложений для анализа данных. Описание (на данный момент устаревшей) архитекруты системы для интерактивной визуализации графов приводится в \cite{scalable_web}. Интерактивный анализ текстов затронут в \cite{interactive_document_exploration}. Интерактивная визуализация графов рассматривается в статьях \cite{interactive_relations}, \cite{interactive_large_graph}, \cite{interactive_tpp}. Интерактивные трехмерные графы появляются в статьях \cite{interactive_3d_graph}, \cite{interactive_graph_3d_fast}, \cite{graph_interactive}.
+
+Как оказалось, часто наиболее информативные трехмерные визуализации состоят из нескольких плоских визуализаций. Эта техника называется 2.5D. Статьи \cite{25d_simultaneous} и \cite{25d_interactive_graph} использует 2.5D для соотнесения графов во времени, при этом в последней используются интерактивные визуализации. В \cite{25d_bloggers} представлена визуализация 2.5D, показывающая изменения во времени в коллекции текстовых документов. 
+
+Множество статей посвящены оптимизации рисования больших графов: в биоогии \cite{bio_graph}, в анализе текстов \cite{large_document}, для интерактивных визуализаций \cite{interactive_large_graph}. Общий обзор средств дан в статье \cite{large_graph_survey}.
+
+При реализации t-SNE использовалась оригинальная статья \cite{tsne} с оптимизациями, описанными в \cite{acc_tsne}. Оригинальная идея Barnes-Hut simulation была описана в статье \cite{barnes_hut}.
+
+При использовании модели word2vec было необходимо рассчитать размер надписи термина на основании его абсолютной встречаемости и длины вектора. Подробное изучение связи этих трех величин было проведено в статье \cite{v2w_length}.
+
+Хороший обзор алгоритмов force-directed drawing дан в учебниках \cite{book_graph_drawing} и \cite{book_force}. Использовалась также оригинальная статья по алгоритму Fruchterman Reingold \cite{fr}.
+
+\section*{Выводы}
+\label{sec:lit_concl}
+\addcontentsline{toc}{section}{\nameref{sec:lit_concl}}
+
+
+
 
 \chapter{Архитектура приложения}
 
@@ -78,7 +103,7 @@ iFORA (intelligent foresight analytics) является одной из мно�
 Выгрузка по поисковому запросу содержала:
 
 \begin{itemize}
-\item Несколько тысяч именованных сущностей, их встречаемость, центральность, специфичность, разбиение на кластеры методом {\itshape Louvain Modularity}.
+\item Несколько тысяч именованных сущностей, их встречаемость, центральность, специфичность, разбиение на кластеры методом {\itshape Louvain Modularity} \cite{communities}.
 \item Встречаемость сущностей по годам.
 \item Совстречаемость сущностей по годам. При построении графа совстречаемости использовались не все найденные документы, а окрестности найденных ключевых слов, что увеличивало релевантность получающегося графа.
 \item Для каждого года общее количество обработанных документов.
@@ -152,7 +177,7 @@ iFORA (intelligent foresight analytics) является одной из мно�
 
 Для автономной работы было необходимо реализовать некоторые алгоритмы визуализации данных в браузере. Было решено использовать Fruchterman-Reingold для графов совстречаемости и t-SNE для семантических карт word2vec представлений терминов.
 
-Оба алгоритма имели множество реализаций (вкючая оптимизации типа Barnes-Hut) на JavaScript. Однако эти реализации очень медленно работали на нескольких тысячах вершин. Так как использование графической карты потенциально могло ускорить эти алгоритмы и так как не было реализаций с использованием GPU, было принято решение провести эксперимент по портированию алгоритмов для вычислений в шейдерах WebGL.
+Оба алгоритма имели множество реализаций (вкючая оптимизации типа Barnes-Hut \cite{barnes_hut}) на JavaScript. Однако эти реализации очень медленно работали на нескольких тысячах вершин. Так как использование графической карты потенциально могло ускорить эти алгоритмы и так как не было реализаций с использованием GPU, было принято решение провести эксперимент по портированию алгоритмов для вычислений в шейдерах WebGL.
 
 \section{Производительные вычисления в браузере}
 
@@ -201,6 +226,10 @@ iFORA (intelligent foresight analytics) является одной из мно�
 Решение состоит в том, чтобы часто используемый код перенести на отдельный сервер, который будет генерировать файл с визуализацией. В случае, если необходимо генерировать визуализации интерактивно, можно создать отдельное веб-приложение для этого и встроить в него <<проигрыватель>>.
 
 Такое разделение позволяет добавлять новые виды визуализаций, не усложняя приложение и серверную часть.
+
+\section{Сравнение с аналогами}
+
+Приложение в первую очередь сравнимо с такими продуктами как Gephi и Tensorflow Embedding Projector. Несмотря на гораздо меньшую функциональность с точки зрения пользователя, это приложение имеет следующие преимущества: возможность быстрого прототипирования и воспроизведения разнообразных визуализаций, сохранение анимаций в видео, гораздо более быстрое выполнение алгоритмов t-SNE и force-directed graph drawing.
 
 \chapter{Алгоритмы визуализации данных в браузере}
 
@@ -286,6 +315,8 @@ $$y_i^{t} = y_i^{t - 1} + \eta \Delta y_i + \alpha(t)(y_i^{t - 1} - y_i^{t - 2})
 где $\eta$ --- фиксированная константа, $\alpha(t)$ --- убывающая функция, $y_i^t$ --- значение $y_i$ после итерации $t$.
 
 \section{Модификации t-SNE для ускорения вычислений}
+
+Данная глава основана на работе \cite{acc_tsne}.
 
 Для вычислений значений $p_{i|j}$ используется нормальное распределение, которое, как известно, при больших отклонениях от центра убывает экспоненциально. Таким образом, можно заменить такие значения на нули.
 
@@ -453,7 +484,7 @@ calc_attr_mul_tsne(float sq_dist, float weight):
 \item[(y)] Двоичное/квадро-/окто-дерево.
 \end{itemize}
 
-Сочетание (m)(y) называется Barnes-Hut simulation.
+Сочетание (m)(y) называется Barnes-Hut simulation \cite{barnes_hut}.
 
 \section{Представление иерархии клеток в виде текстуры}
 
@@ -899,7 +930,95 @@ return sum / count;
 \item \texttt{tex} --- значние случайного пикселя, в направлении \texttt{delta} от текущего пикселя.
 \end{itemize}
 
-\chapter{Список литературы}
+\begin{thebibliography}{99}
+
+\bibitem{communities} Blondel, Vincent D., et al. "Fast unfolding of communities in large networks." Journal of statistical mechanics: theory and experiment 2008.10 (2008): P10008.
+
+\bibitem{acc_tsne} Van Der Maaten, Laurens. "Accelerating t-SNE using tree-based algorithms." Journal of machine learning research 15.1 (2014): 3221-3245.
+
+\bibitem{barnes_hut} Barnes, J. Fritz and Piet Hut. “A hierarchical O(N log N) force-calculation algorithm.” Nature 324 (1986): 446-449.
+
+\bibitem{v2w_length} Schakel, Adriaan MJ, and Benjamin J. Wilson. "Measuring word significance using distributed representations of words." arXiv preprint arXiv:1508.02297 (2015).
+
+\bibitem{tsne} Maaten, Laurens van der, and Geoffrey Hinton. "Visualizing data using t-SNE." Journal of machine learning research 9.Nov (2008): 2579-2605.
+
+\bibitem{weighted_layout} Vrajitoru, Dana, and Jason DeBoni. "Consistent graph layout for weighted graphs." Computer Systems and Applications, 2005. The 3rd ACS/IEEE International Conference on. IEEE, 2005.
+
+\bibitem{graph_2d_survey} Gibson, Helen, Joe Faith, and Paul Vickers. "A survey of two-dimensional graph layout techniques for information visualisation." Information visualization 12.3-4 (2013): 324-357.
+
+\bibitem{graph_nlp_survey} Nastase, Vivi, Rada Mihalcea, and Dragomir R. Radev. "A survey of graphs in natural language processing." Natural Language Engineering 21.5 (2015): 665-698.
+
+\bibitem{graph_navigation} Herman, Ivan, Guy Melançon, and M. Scott Marshall. "Graph visualization and navigation in information visualization: A survey." IEEE Transactions on visualization and computer graphics 6.1 (2000): 24-43.
+
+\bibitem{interactive_tpp} Gibson, Helen, and Paul Vickers. "graphTPP: A multivariate based method for interactive graph layout and analysis." arXiv preprint arXiv:1712.05644 (2017).
+
+\bibitem{3d_vis_info} Young, Peter. "Three dimensional information visualisation." (1996).
+
+\bibitem{interactive_relations} Dörk, Marian, Sheelagh Carpendale, and Carey Williamson. "Visualizing explicit and implicit relations of complex information spaces." Information Visualization 11.1 (2012): 5-21.
+
+\bibitem{interactive_large_graph} Wills, Graham J. "NicheWorks—interactive visualization of very large graphs." International Symposium on Graph Drawing. Springer, Berlin, Heidelberg, 1997.
+
+\bibitem{forceatlas2} Jacomy, Mathieu, et al. "ForceAtlas2, a continuous graph layout algorithm for handy network visualization designed for the Gephi software." PloS one 9.6 (2014): e98679.
+
+\bibitem{interactive_graph_3d_fast} Bruß, Ingo, and Arne Frick. "Fast interactive 3-D graph visualization." International Symposium on Graph Drawing. Springer, Berlin, Heidelberg, 1995.
+
+\bibitem{fr} Fruchterman, Thomas MJ, and Edward M. Reingold. "Graph drawing by force‐directed placement." Software: Practice and experience 21.11 (1991): 1129-1164.
+
+\bibitem{graph_3d_clustered} Ho, Joshua, and Seok-Hee Hong. "Drawing clustered graphs in three dimensions." International Symposium on Graph Drawing. Springer, Berlin, Heidelberg, 2005.
+
+\bibitem{interactive_3d_graph} Ahmed, Adel, et al. "Geomi: Geometry for maximum insight." International Symposium on Graph Drawing. Springer, Berlin, Heidelberg, 2005.
+
+\bibitem{classic_3d_trees} Robertson, George G., Jock D. Mackinlay, and Stuart K. Card. "Cone trees: animated 3D visualizations of hierarchical information." Proceedings of the SIGCHI conference on Human factors in computing systems. ACM, 1991.
+
+\bibitem{book_graph_drawing} Tamassia, Roberto, Giuseppe Di Battista, and Carlo Batini. "Automatic graph drawing and readability of diagrams." IEEE Transactions on Systems, Man, and Cybernetics 18.1 (1988): 61-79.
+
+\bibitem{interactive_document_exploration} Görg, Carsten, et al. "Combining computational analyses and interactive visualization for document exploration and sensemaking in jigsaw." IEEE Transactions on Visualization and Computer Graphics 19.10 (2013): 1646-1663.
+
+\bibitem{cooc_graph} Ohsawa, Yukio, Nels E. Benson, and Masahiko Yachida. "KeyGraph: Automatic indexing by co-occurrence graph based on building construction metaphor." Research and Technology Advances in Digital Libraries, 1998. ADL 98. Proceedings. IEEE International Forum on. IEEE, 1998.
+
+\bibitem{evolving_graph} Erten, Cesim, et al. "GraphAEL: Graph animations with evolving layouts." International Symposium on Graph Drawing. Springer, Berlin, Heidelberg, 2003.
+
+\bibitem{book_force} Kobourov, Stephen G. "Spring embedders and force directed graph drawing algorithms." arXiv preprint arXiv:1201.3011 (2012).
+
+\bibitem{graph_spring} Kobourov, Stephen G. "Spring embedders and force directed graph drawing algorithms." arXiv preprint arXiv:1201.3011 (2012).
+
+\bibitem{graph_interactive} Tominski, Christian, James Abello, and Heidrun Schumann. "CGV—An interactive graph visualization system." Computers \& Graphics 33.6 (2009): 660-678.
+
+\bibitem{in_situ} Hadlak, Steffen, Hans-Jorg Schulz, and Heidrun Schumann. "In situ exploration of large dynamic networks." IEEE Transactions on Visualization and Computer Graphics 17.12 (2011): 2334-2343.
+
+\bibitem{scalable_web} retarsson, Brynjar, et al. "WiGis: A framework for scalable web-based interactive graph visualizations." International Symposium on Graph Drawing. Springer, Berlin, Heidelberg, 2009.
+
+\bibitem{bio_graph} Adai, Alex T., et al. "LGL: creating a map of protein function with an algorithm for visualizing very large biological networks." Journal of molecular biology 340.1 (2004): 179-190.
+
+\bibitem{25d_interactive_graph} Itoh, Masahiko, Masashi Toyoda, and Masaru Kitsuregawa. "An interactive visualization framework for time-series of web graphs in a 3D environment." Information Visualisation (IV), 2010 14th International Conference. IEEE, 2010.
+
+\bibitem{large_document} Chen, Yanhua, et al. "Exemplar-based visualization of large document corpus (infovis2009-1115)." IEEE Transactions on Visualization and Computer Graphics 15.6 (2009).
+
+\bibitem{phrase_graph} Van Ham, Frank, Martin Wattenberg, and Fernanda B. Viégas. "Mapping text with phrase nets." IEEE transactions on visualization and computer graphics 15.6 (2009).
+
+\bibitem{meme_tracking} Leskovec, Jure, Lars Backstrom, and Jon Kleinberg. "Meme-tracking and the dynamics of the news cycle." Proceedings of the 15th ACM SIGKDD international conference on Knowledge discovery and data mining. ACM, 2009.
+
+\bibitem{word_tree} Wattenberg, Martin, and Fernanda B. Viégas. "The word tree, an interactive visual concordance." IEEE transactions on visualization and computer graphics 14.6 (2008).
+
+\bibitem{classic_ecologies} Chi, Ed H., et al. "Visualizing the evolution of web ecologies." Proceedings of the SIGCHI conference on Human factors in computing systems. ACM Press/Addison-Wesley Publishing Co., 1998.
+
+\bibitem{interactive_layered_graph} Nakazono, Nagayoshi, Kazuo Misue, and Jiro Tanaka. "NeL 2: network drawing tool for handling layered structured network diagram." Proceedings of the 2006 Asia-Pacific Symposium on Information Visualisation-Volume 60. Australian Computer Society, Inc., 2006.
+
+\bibitem{25d_vislink} Collins, Christopher, and Sheelagh Carpendale. "VisLink: Revealing relationships amongst visualizations." IEEE Transactions on Visualization and Computer Graphics 13.6 (2007): 1192-1199.
+
+\bibitem{25d_simultaneous} Erten, Cesim, et al. "Simultaneous graph drawing: Layout algorithms and visualization schemes." International Symposium on Graph Drawing. Springer, Berlin, Heidelberg, 2003.
+
+\bibitem{hyperbolic} Lamping, John, Ramana Rao, and Peter Pirolli. "A focus+ context technique based on hyperbolic geometry for visualizing large hierarchies." Proceedings of the SIGCHI conference on Human factors in computing systems. ACM Press/Addison-Wesley Publishing Co., 1995.
+
+\bibitem{visual_data_mining} Kreuseler, Matthias, and Heidrun Schumann. "A flexible approach for visual data mining." IEEE Transactions on Visualization and Computer Graphics 8.1 (2002): 39-51.
+
+\bibitem{interactive_coordinated_views} Roberts, Jonathan C. "State of the art: Coordinated \& multiple views in exploratory visualization." Coordinated and Multiple Views in Exploratory Visualization, 2007. CMV'07. Fifth International Conference on. IEEE, 2007.
+
+\bibitem{25d_bloggers} Itoh, Masahiko, et al. "Analysis and visualization of temporal changes in bloggers' activities and interests." Visualization Symposium (PacificVis), 2012 IEEE Pacific. IEEE, 2012.
+
+\bibitem{large_graph_survey} Jarukasemratana, Sorn, and Tsuyoshi Murata. "Recent large graph visualization tools: a review." Information and Media Technologies 8.4 (2013): 944-960.
+
+\end{thebibliography}
 
 
 
@@ -929,10 +1048,11 @@ return sum / count;
   \caption{Пример двумерной визуализации.}
 \end{figure}
 
+
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\textwidth]{shots/clusters.png}
-  \caption{Выделение K-Means кластеров вместе с ребрами.}
+  \includegraphics[width=\textwidth]{shots/motion.png}
+  \caption{Пример motion blur.}
 \end{figure}
 
 \begin{figure}[h]
@@ -943,11 +1063,15 @@ return sum / count;
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\textwidth]{shots/motion.png}
-  \caption{Пример motion blur.}
+  \includegraphics[width=\textwidth]{shots/voronoi_1.png}
+  \caption{Пример двумерной t-SNE визуализации, дополненной информацией об искажении расстояний при помощи разной толщины границ клеток диаграммы Вороного.}
 \end{figure}
 
-
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{shots/clusters.png}
+  \caption{Выделение K-Means кластеров вместе с ребрами.}
+\end{figure}
 
 \end{document}
   
