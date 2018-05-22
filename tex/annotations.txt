@@ -1,0 +1,13 @@
+Данная работа посвящена созданию экспериментального (но решающего реальную задачу) веб-приложения, которое выигрывает от использования графической карты двумя различными способами. 
+
+Для вычислений на графической карте при помощи WebGL API обсуждается, почему не все алгоритмы, которые могут эффективно вычисляться на графической карте (например, в CUDA), могут так же эффективно вычисляться с использованием довольно ограниченного WebGL API. Впервые приводится обоснование возможности и псевдокод реализации эффективного (то есть с использованием ряда оптимизаций, включая Barnes-Hut) вычисления t-SNE на шейдерах WebGL. Производятся замеры производительности, показывающие увеличение производительности реализации стандартной (то есть без оптимизаций) версии t-SNE в десятки раз при использовании шейдеров WebGL по сравнению со стандартной (без оптимизаций) реализацией на языке C.
+
+Для генерации графики при помощи графических карт обсуждается сложность разработки интерактивных трехмерных визуализаций и генерации качественного видео на их основе. Предлагается формат хранения интерактивных визуализаций, который может быть воспроизведен при помощи небольшого веб-приложения. Это же приложение может работать как рендер-ферма для создания высококачественного видео на основе такого же файла. Приводится реализация четерых стандартных методов пост-обработки, включенных в профессиональные программы наподобие Adobe After Effects.
+
+--------------------------
+
+The goal of this work is to create experimental (yet practical) web-application, which benefits from using GPU in two different ways.
+
+From the point of view of using GPU for general purpose calculation, it is discussed, that not all algorithms can be ported from other advanced GPU APIs (like CUDA) to limited WebGL API. For the first time it is proven and the implementation is outlined for optimized (by using techniques like Barnes-Hut simulation) implementation of t-SNE on WebGL shaders. The benchmarks for non-optimized implementation of t-SNE on C compared to non-optimized GPU implementation showed the performance gain by more, than 10 times.
+
+In the second part, high development costs for interactive visualizations and high-quality video visualizations are discussed. The format for serialization of interactive visualizations and high-quality video is proposed. It allows a single web-application to act both as player for interactive visualizations and as render-farm for video creation. Four types of post-processing are implemented, usually included into applications like Adobe After Effects.
