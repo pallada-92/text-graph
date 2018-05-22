@@ -1,4 +1,4 @@
-# Визуализация графа совстречаемости терминов в тексте.
+# Визуализация графа совстречаемости терминов.
 
 Этот проект был создан с использованием [Create React App](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
