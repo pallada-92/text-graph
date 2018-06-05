@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { shape, func, bool } from 'prop-types';
+import { shape, func, bool, arrayOf } from 'prop-types';
 import { prop, propEq, mergeDeepRight, difference, fromPairs } from 'ramda';
 
 import { ItemType } from './OpenDialog';
@@ -26,7 +26,7 @@ class DependencyResolver extends Component {
       const img = new Image();
       img.src = URL.createObjectURL(storage[url]);
       img.onload = () => this.setState({});
-      data.images[url] = storage[url];
+      data.images[url] = img;
     });
 
     data.binary = {};
@@ -92,7 +92,7 @@ DependencyResolver.propTypes = {
   downloader: shape({
     requestDownloads: func.isRequired,
     allDone: bool.isRequired,
-    progress: shape({}).isRequired,
+    progress: arrayOf(shape({})).isRequired,
     storage: shape({}).isRequired,
   }).isRequired,
   item: ItemType.isRequired,
