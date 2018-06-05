@@ -16,25 +16,25 @@
             "url": "ml.json",
             "title": "Координаты терминов",
             "type": "json",
-            "size": 100000
+            "size": 1691
           },
           {
             "url": "colors.json",
             "title": "Цвета терминов",
             "type": "json",
-            "size": 100000
+            "size": 1691
           },
           {
             "url": "font.png",
             "title": "Шрифт",
             "type": "image",
-            "size": 100000
+            "size": 1691
           },
           {
             "url": "binary.bin",
             "title": "Бинарный файл",
-            "type": "blob",
-            "size": 100000
+            "type": "binary",
+            "size": 1691
           }
         ]
       }
