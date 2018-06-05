@@ -1,0 +1,35 @@
+[
+  {
+    "type": "folder",
+    "id": "ml",
+    "title": "Machine learning",
+    "description": "15K терминов",
+    "children": [
+      {
+        "type": "item",
+        "title": "Семантическая карта 2D",
+        "id": "ml/sem_map_2d",
+        "description": "w2v 300 → pca 50 → t-sne 2",
+        "icon": "chart pie",
+        "parts": [
+          {
+            "url": "ml.json",
+            "title": "Координаты терминов"
+          },
+          {
+            "url": "colors.json",
+            "title": "Цвета терминов"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "item",
+    "title": "Тест",
+    "id": "test",
+    "description": "Описание",
+    "icon": "bar chart",
+    "parts": []
+  }
+]

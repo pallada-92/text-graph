@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "prop-types": "^15.6.1",
     "ramda": "^0.25.0",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
@@ -12,16 +13,42 @@
     "stats-js": "^1.0.0-alpha1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
+    "extends": "airbnb",
+    "rules": {
+      "arrow-parens": [
+        2,
+        "as-needed",
+        {
+          "requireForBlockBody": false
+        }
+      ],
+      "max-len": [
+        2,
+        {
+          "code": 78
+        }
+      ],
+      "object-curly-newline": "off",
+      "function-paren-newline": "off",
+      "comma-dangle": "off",
+      "no-confusing-arrow": "off",
+      "no-nested-ternary": "off",
+      "no-mixed-operators": "off"
+    },
     "parser": "babel-eslint",
-    "extends": "react-app",
     "env": {
       "browser": true
     }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "printWidth": 78
   }
 }
