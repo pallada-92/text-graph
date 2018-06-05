@@ -9,7 +9,7 @@ const Item = ({ selected, doOpen, children }) => (
     <L.Icon name={children.icon} />
     <L.Content>
       <L.Header>
-        <a href="#" onClick={() => doOpen(children)}>
+        <a href={`#${children.id}`} onClick={() => doOpen(children)}>
           {children.title}
         </a>
         {selected ? (

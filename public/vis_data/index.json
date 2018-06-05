@@ -14,11 +14,27 @@
         "parts": [
           {
             "url": "ml.json",
-            "title": "Координаты терминов"
+            "title": "Координаты терминов",
+            "type": "json",
+            "size": 100000
           },
           {
             "url": "colors.json",
-            "title": "Цвета терминов"
+            "title": "Цвета терминов",
+            "type": "json",
+            "size": 100000
+          },
+          {
+            "url": "font.png",
+            "title": "Шрифт",
+            "type": "image",
+            "size": 100000
+          },
+          {
+            "url": "binary.bin",
+            "title": "Бинарный файл",
+            "type": "blob",
+            "size": 100000
           }
         ]
       }

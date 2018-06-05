@@ -25,7 +25,7 @@ class Downloader extends Component {
     this.storage = {};
   }
 
-  download(token, { url, type, title, key }) {
+  download(token, { url, type, title, key, size }) {
     const req = new XMLHttpRequest();
     req.open('GET', url);
     req.responseType = type;
@@ -39,8 +39,8 @@ class Downloader extends Component {
           url,
           type,
           title,
+          bytesToDownload: size || 0,
           bytesDownloaded: 0,
-          bytesToDownload: 0,
           state: 'downloading',
         },
       },
@@ -78,14 +78,15 @@ class Downloader extends Component {
     });
 
     req.addEventListener('progress', evt => {
-      if (evt.lengthComputable) {
+      if (evt.lengthComputable || size) {
+        const bytesToDownload = evt.lengthComputable ? evt.total : size;
         this.setState(({ tokens }) => ({
           tokens: {
             ...tokens,
             [token]: {
               ...tokens[token],
+              bytesToDownload,
               bytesDownloaded: evt.loaded,
-              bytesToDownload: evt.total,
             },
           },
         }));

@@ -6,7 +6,7 @@ import OpenDialog from './OpenDialog';
 import State from './State';
 import findItem from '../findItem';
 import IViewer from './IViewer';
-import DownloadManager from './DownloadManager';
+import DependencyResolver from './DependencyResolver';
 
 const App = () => (
   <SimpleDownloader
@@ -16,6 +16,7 @@ const App = () => (
         type: 'json',
         title: 'Список визуализаций',
         key: 'index',
+        size: 1000,
       },
     }}
   >
@@ -40,9 +41,9 @@ const App = () => (
                     }}
                   />
                 ) : (
-                  <DownloadManager downloader={downloader} item={selItem}>
+                  <DependencyResolver downloader={downloader} item={selItem}>
                     {data => <IViewer data={data} />}
-                  </DownloadManager>
+                  </DependencyResolver>
                 )
               }
             </Downloader>
