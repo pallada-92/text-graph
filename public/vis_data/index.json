@@ -13,13 +13,13 @@
         "icon": "chart pie",
         "parts": [
           {
-            "url": "ml.json",
+            "url": "vis_data/ml.json",
             "title": "Координаты терминов",
             "type": "json",
             "size": 1691
           },
           {
-            "url": "colors.json",
+            "url": "vis_data/colors.json",
             "title": "Цвета терминов",
             "type": "json",
             "size": 1691
@@ -31,7 +31,7 @@
             "size": 1691
           },
           {
-            "url": "binary.bin",
+            "url": "vis_data/binary.bin",
             "title": "Бинарный файл",
             "type": "binary",
             "size": 1691
@@ -46,6 +46,13 @@
     "id": "test",
     "description": "Описание",
     "icon": "bar chart",
-    "parts": []
+    "parts": [
+      {
+        "url": "vis_data/test.json",
+        "title": "test",
+        "type": "json",
+        "size": 100
+      }
+    ]
   }
 ]

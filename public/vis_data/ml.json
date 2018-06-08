@@ -1,0 +1,31 @@
+{
+  "id": "ml/sem_map_2d",
+  "quickJump": [
+    {
+      "id": "ml/sem_map_2d",
+      "title": "ML"
+    },
+    {
+      "id": "test",
+      "title": "Тест"
+    }
+  ],
+  "views": [
+    {
+      "title": "Вид 1",
+      "data": {
+        "uniforms": {
+          "test": 1
+        }
+      }
+    },
+    {
+      "title": "Вид 2",
+      "data": {
+        "uniforms": {
+          "test": 1
+        }
+      }
+    }
+  ]
+}

@@ -42,7 +42,15 @@ const App = () => (
                   />
                 ) : (
                   <DependencyResolver downloader={downloader} item={selItem}>
-                    {data => <IViewer data={data} />}
+                    {data => (
+                      <IViewer
+                        data={data}
+                        openDialog={() => setState({ isDialogOpened: true })}
+                        openItem={id =>
+                          setState({ selItem: findItem(index, id) })
+                        }
+                      />
+                    )}
                   </DependencyResolver>
                 )
               }
