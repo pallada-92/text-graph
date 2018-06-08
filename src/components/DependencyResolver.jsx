@@ -6,6 +6,19 @@ import { ItemType } from './OpenDialog';
 import DownloadProgress from './DownloadProgress';
 
 class DependencyResolver extends Component {
+  componentDidMount() {
+    if (this.shouldMakeRequest()) {
+      this.makeRequest();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.parts === this.props.item.parts) return;
+    if (this.shouldMakeRequest()) {
+      this.makeRequest();
+    }
+  }
+
   getUrls = () => this.props.item.parts.map(prop('url'));
 
   getLoadedUrls = () => {
@@ -63,7 +76,6 @@ class DependencyResolver extends Component {
 
   render() {
     if (this.shouldMakeRequest()) {
-      this.makeRequest();
       this.resolved = null;
       return <span>making request...</span>;
     }
@@ -82,7 +94,20 @@ class DependencyResolver extends Component {
       }
     });
     if (!imagesReady) {
-      return <span>resolving images...</span>;
+      return (
+        <DownloadProgress
+          progress={[
+            {
+              title: 'Чтение изображений',
+              token: 'images',
+              key: 'images',
+              bytesDownloaded: 100,
+              bytesToDownload: 100,
+              state: 'done',
+            },
+          ]}
+        />
+      );
     }
     return this.props.children(this.resolved);
   }
