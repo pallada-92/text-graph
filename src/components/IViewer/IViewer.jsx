@@ -27,9 +27,9 @@ class IViewer extends Component {
         is2d: false,
         near: 0.1,
         far: 100,
-        fov: 30,
-        alpha: 30,
-        beta: 45,
+        fov: 1,
+        alpha: 0,
+        beta: 0,
         dist: 10,
       },
     };

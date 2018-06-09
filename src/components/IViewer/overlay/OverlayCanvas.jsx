@@ -4,10 +4,12 @@ import { number, func } from 'prop-types';
 import { RectType, PointType, CameraType, TimerType } from '../../types';
 import * as Timer from './timer';
 import * as Cube from './cube';
+import { clamp } from '../utils';
 
 class SelectionCanvas extends Component {
   canvas = null;
   mouseDownPos = null;
+  mouseDownComp = null;
 
   draw() {
     const { canvas } = this;
@@ -32,7 +34,7 @@ class SelectionCanvas extends Component {
 
   onMouseDown = ({ clientX, clientY }) => {
     this.mouseDownPos = [clientX, clientY];
-    const { timer, togglePlayStop, setTime } = this.props;
+    const { timer, camera, target, togglePlayStop, setTime } = this.props;
     if (
       Timer.onMouseDown(
         timer,
@@ -42,8 +44,24 @@ class SelectionCanvas extends Component {
         togglePlayStop,
         setTime
       )
-    )
-      return;
+    ) {
+      this.mouseDownComp = 'timer';
+    } else if (Cube.onMouseDown(this.canvas, clientX, clientY)) {
+      if (this.mouseDownComp === 'cube') {
+        prompt(
+          'Вы можете скопировать текущние данные камеры:',
+          JSON.stringify({
+            camera,
+            timer,
+            target,
+          })
+        );
+      }
+      this.mouseDownComp = 'cube';
+    } else {
+      this.mouseDownComp = 'view';
+      this.mouseDownCamera = camera;
+    }
   };
 
   onMouseUp = () => {
@@ -53,22 +71,25 @@ class SelectionCanvas extends Component {
   onMouseMove = ({ clientX, clientY }) => {
     const { timer, setTime, camera, setCamera } = this.props;
     if (this.mouseDownPos === null) {
-    } else {
-      if (
-        Timer.onMouseDrag(
-          timer,
-          this.canvas,
-          ...this.mouseDownPos,
-          clientX,
-          clientY,
-          setTime
-        )
-      )
-        return;
-
+    } else if (this.mouseDownComp === 'timer') {
+      Timer.onMouseDrag(
+        timer,
+        this.canvas,
+        ...this.mouseDownPos,
+        clientX,
+        clientY,
+        setTime
+      );
+    } else if (this.mouseDownComp === 'view') {
+      const { alpha, beta } = this.mouseDownCamera;
       setCamera({
-        alpha: camera.alpha + 0.1,
-        beta: camera.beta + 0.1,
+        alpha:
+          (alpha - (clientX - this.mouseDownPos[0]) * 0.005) % (2 * Math.PI),
+        beta: clamp(
+          -Math.PI / 2,
+          Math.PI / 2,
+          beta + (clientY - this.mouseDownPos[1]) * 0.005
+        ),
       });
     }
   };

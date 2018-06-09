@@ -1,10 +1,11 @@
-import { applyCamera } from '../utils';
 import { sortBy, mean, prop } from 'ramda';
 
+import { applyCamera } from '../utils';
+
 const pos = {
-  l: 50,
-  b: 90,
-  s: 50,
+  l: 35,
+  b: 100,
+  s: 20,
 };
 
 const edges = [
@@ -13,23 +14,23 @@ const edges = [
     vertices: [[-1, -1, -1], [+1, -1, -1], [+1, +1, -1], [-1, +1, -1]],
   },
   {
-    color: 'green',
+    color: 'orange',
     vertices: [[-1, -1, +1], [+1, -1, +1], [+1, +1, +1], [-1, +1, +1]],
   },
   {
-    color: 'blue',
+    color: 'yellow',
     vertices: [[-1, -1, -1], [-1, -1, +1], [+1, -1, +1], [+1, -1, -1]],
   },
   {
-    color: 'orange',
+    color: 'lightgray',
     vertices: [[-1, +1, -1], [-1, +1, +1], [+1, +1, +1], [+1, +1, -1]],
   },
   {
-    color: 'lightgray',
+    color: 'blue',
     vertices: [[-1, -1, -1], [-1, -1, +1], [-1, +1, +1], [-1, +1, -1]],
   },
   {
-    color: 'yellow',
+    color: 'green',
     vertices: [[+1, -1, -1], [+1, -1, +1], [+1, +1, +1], [+1, +1, -1]],
   },
 ];
@@ -77,4 +78,12 @@ export const draw = (target, camera, ctx) => {
     ctx.fill();
   });
   ctx.restore();
+};
+
+export const onMouseDown = (canvas, x, y) => {
+  const { height: H } = canvas;
+
+  if (y < H - 120) return false;
+  if (x > 80) return false;
+  return true;
 };
