@@ -10,7 +10,59 @@ class IViewer extends Component {
     super(props);
     this.width = window.innerWidth;
     this.height = window.innerHeight;
+    this.state = {
+      timer: {
+        time: 0.5,
+        maxTime: 2,
+        playing: false,
+        fps: 30,
+        labels: ['2009', '2010', '2011'],
+      },
+      target: {
+        x: 0,
+        y: 0,
+        z: 0,
+      },
+      camera: {
+        is2d: false,
+        near: 0.1,
+        far: 100,
+        fov: 30,
+        alpha: 30,
+        beta: 45,
+        dist: 10,
+      },
+    };
   }
+
+  setCamera = newCamera => {
+    const { camera } = this.state;
+    this.setState({
+      camera: {
+        ...camera,
+        ...newCamera,
+      },
+    });
+  };
+
+  setTime = time => {
+    const { timer } = this.state;
+    this.setState({
+      timer: {
+        ...timer,
+        time: Math.round(time * timer.fps) / timer.fps,
+      },
+    });
+  };
+
+  togglePlayStop = () => {
+    this.setState({
+      timer: {
+        ...this.state.timer,
+        playing: !this.state.timer.playing,
+      },
+    });
+  };
 
   render() {
     const { data, openDialog, openItem } = this.props;
@@ -25,25 +77,12 @@ class IViewer extends Component {
             width: 300,
             height: 400,
           }}
-          target={{ x: 1, y: 2, z: 3 }}
-          camera={{
-            is2d: false,
-            near: 0.1,
-            far: 100,
-            fov: 30,
-            alpha: 30,
-            beta: 45,
-            dist: 10,
-          }}
-          timer={{
-            time: 0.5,
-            maxTime: 2,
-            playing: false,
-            fpc: 30,
-            labels: ['0.0', '1.0', '2.0'],
-          }}
-          setTime={() => null}
-          togglePlayStop={() => null}
+          target={this.state.target}
+          camera={this.state.camera}
+          timer={this.state.timer}
+          setCamera={this.setCamera}
+          setTime={this.setTime}
+          togglePlayStop={this.togglePlayStop}
         />
         <div style={{ position: 'absolute', top: 10, left: 10 }}>
           <TopLeftMenu

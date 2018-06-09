@@ -26,7 +26,7 @@ export const CameraType = shape({
 export const TimerType = shape({
   time: number.isRequired,
   maxTime: number.isRequired,
-  fpc: number.isRequired,
+  fps: number.isRequired,
   playing: bool.isRequired,
   labels: arrayOf(string).isRequired,
 });

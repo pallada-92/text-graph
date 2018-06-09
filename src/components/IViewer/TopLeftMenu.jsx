@@ -11,7 +11,7 @@ const TopLeftMenu = ({
 }) => (
   <Fragment>
     <div>
-      <Button basic icon onClick={() => openDialog()}>
+      <Button icon onClick={() => openDialog()}>
         <Icon name="folder open" />
       </Button>
       <Dropdown
