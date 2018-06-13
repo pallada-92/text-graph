@@ -3,8 +3,10 @@ import { bool, number, string, arrayOf, shape } from 'prop-types';
 export const RectType = shape({
   top: number.isRequired,
   left: number.isRequired,
+  near: number,
   width: number.isRequired,
   height: number.isRequired,
+  depth: number,
 });
 
 export const PointType = shape({
@@ -21,6 +23,9 @@ export const CameraType = shape({
   alpha: number.isRequired,
   beta: number.isRequired,
   dist: number.isRequired,
+  minDist: number.isRequired,
+  maxDist: number.isRequired,
+  bbox: RectType.isRequired,
 });
 
 export const TimerType = shape({

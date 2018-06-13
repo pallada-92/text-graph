@@ -10,7 +10,7 @@ export const onMouseDrag = ({ alpha, beta }, dx, dy, setCamera) => {
 };
 
 export const onRightMouseDrag = (
-  { alpha, beta },
+  { alpha, beta, dist, bbox: { top, left, near, width, height, depth } },
   { x, y, z },
   dx,
   dy,
@@ -23,11 +23,24 @@ export const onRightMouseDrag = (
   vec3.rotateY(basisZ, basisZ, vec3.create(), alpha + Math.PI / 2);
   const basisY = vec3.create();
   vec3.cross(basisY, basisX, basisZ);
-  const coeff = 0.01;
+  const coeff = 0.001 * dist;
+
   setTarget({
-    x: x + (basisY[0] * dy - basisX[0] * dx) * coeff,
-    y: y + (basisY[1] * dy - basisX[1] * dx) * coeff,
-    z: z + (basisY[2] * dy - basisX[2] * dx) * coeff,
+    x: clamp(
+      left,
+      left + width,
+      x + (basisY[0] * dy - basisX[0] * dx) * coeff
+    ),
+    y: clamp(
+      top,
+      top + height,
+      y + (basisY[1] * dy - basisX[1] * dx) * coeff
+    ),
+    z: clamp(
+      near,
+      near + depth,
+      z + (basisY[2] * dy - basisX[2] * dx) * coeff
+    ),
   });
 };
 

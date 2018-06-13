@@ -1,7 +1,7 @@
 import { roundRect, mix, clamp, proportion } from '../utils';
 
 const line = {
-  l: 120,
+  l: 150,
   r: 80,
   b: 40,
   h: 3,

@@ -31,6 +31,16 @@ class IViewer extends Component {
         alpha: 0,
         beta: 0,
         dist: 10,
+        minDist: 0.01,
+        maxDist: 100,
+        bbox: {
+          top: -1,
+          left: -1,
+          near: -1,
+          width: 2,
+          height: 2,
+          depth: 2,
+        },
       },
     };
   }

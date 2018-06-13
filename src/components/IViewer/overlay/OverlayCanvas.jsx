@@ -99,7 +99,7 @@ class SelectionCanvas extends Component {
     if (canvas === null) return;
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const { timer, camera, target } = this.props;
