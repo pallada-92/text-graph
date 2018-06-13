@@ -35,6 +35,12 @@ class IViewer extends Component {
     };
   }
 
+  setTarget = target => {
+    this.setState({
+      target,
+    });
+  };
+
   setCamera = newCamera => {
     const { camera } = this.state;
     this.setState({
@@ -81,6 +87,7 @@ class IViewer extends Component {
           camera={this.state.camera}
           timer={this.state.timer}
           setCamera={this.setCamera}
+          setTarget={this.setTarget}
           setTime={this.setTime}
           togglePlayStop={this.togglePlayStop}
         />

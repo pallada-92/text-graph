@@ -11,11 +11,15 @@ import { prompt, log } from '../../../console';
 
 class SelectionCanvas extends Component {
   onMouseDown = e => {
-    const { clientX, clientY } = e;
+    const { clientX, clientY, button } = e;
     e.preventDefault();
     this.mouseDownPos = [clientX, clientY];
     const { timer, camera, target, togglePlayStop, setTime } = this.props;
-    if (
+    if (button !== 0) {
+      this.mouseDownComp = 'view_left';
+      this.mouseDownTarget = target;
+      this.mouseDownCamera = camera;
+    } else if (
       Timer.onMouseDown(
         timer,
         this.canvas,
@@ -51,7 +55,7 @@ class SelectionCanvas extends Component {
   };
 
   onMouseMove = ({ clientX, clientY }) => {
-    const { timer, setTime, setCamera } = this.props;
+    const { timer, setTime, setCamera, setTarget } = this.props;
     if (this.mouseDownPos === null) return;
     const dx = clientX - this.mouseDownPos[0];
     const dy = clientY - this.mouseDownPos[1];
@@ -69,6 +73,14 @@ class SelectionCanvas extends Component {
       Zoom.onMouseDrag(this.mouseDownCamera, dx, dy, setCamera);
     } else if (this.mouseDownComp === 'view') {
       View.onMouseDrag(this.mouseDownCamera, dx, dy, setCamera);
+    } else if (this.mouseDownComp === 'view_left') {
+      View.onRightMouseDrag(
+        this.mouseDownCamera,
+        this.mouseDownTarget,
+        dx,
+        dy,
+        setTarget
+      );
     }
   };
 
@@ -80,6 +92,7 @@ class SelectionCanvas extends Component {
   canvas = null;
   mouseDownPos = null;
   mouseDownComp = null;
+  mouseDownTarget = null;
 
   draw() {
     const { canvas } = this;
@@ -131,6 +144,7 @@ SelectionCanvas.propTypes = {
   setTime: func.isRequired,
   togglePlayStop: func.isRequired,
   setCamera: func.isRequired,
+  setTarget: func.isRequired,
 };
 
 SelectionCanvas.defaultProps = {
