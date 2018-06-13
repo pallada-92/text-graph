@@ -1,38 +1,18 @@
 import React, { Component } from 'react';
 import { number, func } from 'prop-types';
 
-import { RectType, PointType, CameraType, TimerType } from '../../types';
+import { PointType, CameraType, TimerType } from '../../types';
+import * as Points from './points';
+import * as View from './view';
 import * as Timer from './timer';
 import * as Cube from './cube';
-import { clamp } from '../utils';
+import * as Zoom from './zoom';
+import { prompt, log } from '../../../console';
 
 class SelectionCanvas extends Component {
-  canvas = null;
-  mouseDownPos = null;
-  mouseDownComp = null;
-
-  draw() {
-    const { canvas } = this;
-    if (canvas === null) return;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(0, 0, 100, 0.4)';
-
-    const { selection, timer, camera, target } = this.props;
-    if (selection) {
-      const { top, left, width, height } = selection;
-      // ctx.fillRect(top, left, width, height);
-    }
-
-    if (timer) {
-      Timer.draw(timer, ctx);
-    }
-
-    Cube.draw(target, camera, ctx);
-  }
-
-  onMouseDown = ({ clientX, clientY }) => {
+  onMouseDown = e => {
+    const { clientX, clientY } = e;
+    e.preventDefault();
     this.mouseDownPos = [clientX, clientY];
     const { timer, camera, target, togglePlayStop, setTime } = this.props;
     if (
@@ -58,6 +38,8 @@ class SelectionCanvas extends Component {
         );
       }
       this.mouseDownComp = 'cube';
+    } else if (Zoom.onMouseDown(this.canvas, clientX, clientY)) {
+      this.mouseDownComp = 'zoom';
     } else {
       this.mouseDownComp = 'view';
       this.mouseDownCamera = camera;
@@ -69,9 +51,12 @@ class SelectionCanvas extends Component {
   };
 
   onMouseMove = ({ clientX, clientY }) => {
-    const { timer, setTime, camera, setCamera } = this.props;
-    if (this.mouseDownPos === null) {
-    } else if (this.mouseDownComp === 'timer') {
+    const { timer, setTime, setCamera } = this.props;
+    if (this.mouseDownPos === null) return;
+    const dx = clientX - this.mouseDownPos[0];
+    const dy = clientY - this.mouseDownPos[1];
+
+    if (this.mouseDownComp === 'timer') {
       Timer.onMouseDrag(
         timer,
         this.canvas,
@@ -80,19 +65,42 @@ class SelectionCanvas extends Component {
         clientY,
         setTime
       );
+    } else if (this.mouseDownComp === 'zoom') {
+      Zoom.onMouseDrag(this.mouseDownCamera, dx, dy, setCamera);
     } else if (this.mouseDownComp === 'view') {
-      const { alpha, beta } = this.mouseDownCamera;
-      setCamera({
-        alpha:
-          (alpha - (clientX - this.mouseDownPos[0]) * 0.005) % (2 * Math.PI),
-        beta: clamp(
-          -Math.PI / 2,
-          Math.PI / 2,
-          beta + (clientY - this.mouseDownPos[1]) * 0.005
-        ),
-      });
+      View.onMouseDrag(this.mouseDownCamera, dx, dy, setCamera);
     }
   };
+
+  onWheel = e => {
+    const { camera, setCamera } = this.props;
+    View.onWheel(camera, e, setCamera);
+  };
+
+  canvas = null;
+  mouseDownPos = null;
+  mouseDownComp = null;
+
+  draw() {
+    const { canvas } = this;
+    if (canvas === null) return;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const { timer, camera, target } = this.props;
+
+    Points.draw(target, camera, ctx);
+
+    if (timer) {
+      Timer.draw(timer, ctx);
+    }
+
+    Cube.draw(target, camera, ctx);
+
+    Zoom.draw(camera, ctx);
+  }
 
   render() {
     const { width, height } = this.props;
@@ -107,6 +115,8 @@ class SelectionCanvas extends Component {
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
         onMouseMove={this.onMouseMove}
+        onContextMenu={e => e.preventDefault()}
+        onWheel={e => this.onWheel(e)}
       />
     );
   }
@@ -115,16 +125,15 @@ class SelectionCanvas extends Component {
 SelectionCanvas.propTypes = {
   width: number.isRequired,
   height: number.isRequired,
-  selection: RectType,
   target: PointType.isRequired,
   camera: CameraType.isRequired,
   timer: TimerType,
   setTime: func.isRequired,
   togglePlayStop: func.isRequired,
+  setCamera: func.isRequired,
 };
 
 SelectionCanvas.defaultProps = {
-  selection: null,
   timer: null,
 };
 

@@ -4,7 +4,7 @@ const line = {
   l: 120,
   r: 80,
   b: 40,
-  h: 5,
+  h: 3,
   hoverR: 20,
 };
 
@@ -15,10 +15,6 @@ const btn = {
   b: 42.5,
   s: 20,
 };
-
-export const initState = () => ({
-  hovered: false,
-});
 
 const tickPos = (timer, ctx, t) => {
   const {
@@ -160,5 +156,3 @@ export const onMouseDrag = (timer, canvas, x0, y0, x, y, setTime) => {
   }
   return false;
 };
-
-export const onMouseMove = (timer, canvas, x, y) => {};

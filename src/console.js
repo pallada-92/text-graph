@@ -1,7 +1,7 @@
-export const warn = (...args) => {
-  window.console.warn(...args);
-};
+/* eslint-disable */
 
-export const log = (...args) => {
-  window.console.log(...args);
-};
+export const warn = console.warn;
+
+export const log = console.log;
+
+export const prompt = window.prompt;

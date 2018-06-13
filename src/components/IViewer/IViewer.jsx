@@ -3,7 +3,7 @@ import { shape, func } from 'prop-types';
 
 import OverlayCanvas from './overlay/OverlayCanvas';
 import TopLeftMenu from './TopLeftMenu';
-import WebGLCanvas from '../WebGLCanvas';
+// import WebGLCanvas from '../WebGLCanvas';
 
 class IViewer extends Component {
   constructor(props) {
