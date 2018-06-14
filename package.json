@@ -40,7 +40,8 @@
       "comma-dangle": "off",
       "no-confusing-arrow": "off",
       "no-nested-ternary": "off",
-      "no-mixed-operators": "off"
+      "no-mixed-operators": "off",
+      "no-buffer-constructor": "off"
     },
     "parser": "babel-eslint",
     "env": {

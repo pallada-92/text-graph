@@ -5,7 +5,7 @@ const line = {
   t: 150,
   b: 200,
   h: 300,
-  w: 2,
+  w: 1,
 };
 
 const lineH = ({ height }) => Math.min(height - line.b - line.t, line.h);
@@ -30,14 +30,14 @@ export const draw = (camera, ctx) => {
   ctx.beginPath();
   ctx.rect(line.l, line.t, line.w, h);
   const y = dist2Y(camera, ctx.canvas);
-  const r = 7;
+  const r = 4;
   const x = line.l + line.w / 2;
   ctx.moveTo(x + r, y);
   ctx.arc(x, y, r, 0, 2 * Math.PI);
   ctx.stroke();
   ctx.fill();
 
-  ctx.font = '30px Helvetica';
+  ctx.font = '25px Helvetica';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.strokeText('+', line.l + line.w / 2, line.t - 20);

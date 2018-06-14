@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { number, func } from 'prop-types';
 
 import { PointType, CameraType, TimerType } from '../../types';
-import * as Points from './points';
+// import * as Points from './points';
 import * as View from './view';
 import * as Timer from './timer';
 import * as Cube from './cube';
 import * as Zoom from './zoom';
-import { prompt, log } from '../../../console';
+import { prompt } from '../../../console';
 
 class SelectionCanvas extends Component {
   onMouseDown = e => {
@@ -99,12 +99,14 @@ class SelectionCanvas extends Component {
     if (canvas === null) return;
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // ctx.fillStyle = 'black';
+    // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const { timer, camera, target } = this.props;
 
-    Points.draw(target, camera, ctx);
+    // Points.draw(target, camera, ctx);
 
     if (timer) {
       Timer.draw(timer, ctx);
@@ -123,6 +125,7 @@ class SelectionCanvas extends Component {
           this.canvas = canvas;
           this.draw();
         }}
+        style={{ position: 'absolute', top: 0, left: 0 }}
         width={width}
         height={height}
         onMouseDown={this.onMouseDown}

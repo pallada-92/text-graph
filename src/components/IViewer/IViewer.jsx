@@ -3,7 +3,7 @@ import { shape, func } from 'prop-types';
 
 import OverlayCanvas from './overlay/OverlayCanvas';
 import TopLeftMenu from './TopLeftMenu';
-// import WebGLCanvas from '../WebGLCanvas';
+import WebGLCanvas from './webgl/WebGLCanvas';
 
 class IViewer extends Component {
   constructor(props) {
@@ -83,7 +83,15 @@ class IViewer extends Component {
   render() {
     const { data, openDialog, openItem } = this.props;
     return (
-      <div>
+      <div
+        style={{
+          position: 'relative',
+          width: this.width,
+          height: this.height,
+          overflow: 'hidden',
+        }}
+      >
+        <WebGLCanvas width={this.width} height={this.height} />
         <OverlayCanvas
           width={this.width}
           height={this.height}
