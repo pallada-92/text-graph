@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { number } from 'prop-types';
+import { number, func } from 'prop-types';
 
 class WebGLCanvas extends Component {
   constructor(props) {
@@ -41,6 +41,7 @@ class WebGLCanvas extends Component {
 WebGLCanvas.propTypes = {
   width: number.isRequired,
   height: number.isRequired,
+  registerDrawLayer: func.isRequired,
 };
 
 export default WebGLCanvas;

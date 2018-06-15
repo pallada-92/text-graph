@@ -42,6 +42,7 @@ class IViewer extends Component {
           depth: 2,
         },
       },
+      layers: [{}],
     };
   }
 
@@ -91,7 +92,11 @@ class IViewer extends Component {
           overflow: 'hidden',
         }}
       >
-        <WebGLCanvas width={this.width} height={this.height} />
+        <WebGLCanvas
+          ref={e => console.log(e)}
+          width={this.width}
+          height={this.height}
+        />
         <OverlayCanvas
           width={this.width}
           height={this.height}
